@@ -3,14 +3,13 @@ title: "Replication"
 author: Yingzhi Zhang
 date: today
 date-format: long
-abstract: 
+abstract: "the abstract of the paper"
 format: pdf
 header-includes: 
 - \usepackage{float}
 mainfont: Times New Roman
 sansfont: Times New Roman
 number-sections: true
-bibliography: references.bib
 toc: true
 ---
 
@@ -44,7 +43,6 @@ library(kableExtra)
 #| eval: false
 #| warning: false
 #| message: false
-#| include: false
 #| label: tbl-01
 #| tbl-cap: "First ten rows of the cleaned crisis call data"
 #| tbl-cap-location: bottom
@@ -68,7 +66,6 @@ table_clean
 #| eval: false
 #| warning: false
 #| message: false
-#| include:false
 #| label: fig-type
 #| fig-cap: "Trend of crisis calls by type over time"
 #| fig-pos: H
@@ -97,7 +94,6 @@ crisis_type_graph
 #| eval: false
 #| warning: false
 #| message: false
-#| include:false
 #| label: fig-time
 #| fig-cap: "Distribution of crisis calls over the day by type"
 #| fig-pos: H
@@ -124,7 +120,6 @@ time_graph
 #| eval: false
 #| warning: false
 #| message: false
-#| include: false
 #| label: fig-location
 #| fig-cap: "Number of crisis calls in different neighbourhoods classified by types"
 #| fig-width: 8
