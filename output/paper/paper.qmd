@@ -1,0 +1,154 @@
+---
+title: "Replication"
+author: Yingzhi Zhang
+date: today
+date-format: long
+abstract: 
+format: pdf
+header-includes: 
+- \usepackage{float}
+mainfont: Times New Roman
+sansfont: Times New Roman
+number-sections: true
+bibliography: references.bib
+toc: true
+---
+
+```{r}
+#| include: false
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(janitor)
+library(lubridate)
+library(opendatatoronto)
+library(knitr)
+library(kableExtra)
+
+```
+
+# Introduction
+
+
+
+# Data 
+## Source and Data Collection
+
+
+## Data Processing
+
+
+```{r}
+#| echo: false
+#| eval: false
+#| warning: false
+#| message: false
+#| include: false
+#| label: tbl-01
+#| tbl-cap: "First ten rows of the cleaned crisis call data"
+#| tbl-cap-location: bottom
+#| tbl-pos: H
+
+cleaned_data <- read_csv(paste0(gsub("/paper", "", getwd()), "/data/cleaned_data.csv"))
+table01_data <- head(cleaned_data, 10)
+table_clean <-
+  kable(table01_data, format = "latex", booktabs = TRUE) %>%
+  kable_styling(latex_options = c("striped", "scale_down"))
+
+table_clean
+```
+
+## Data Visualisation
+### Crisis type
+
+
+```{r}
+#| echo: false
+#| eval: false
+#| warning: false
+#| message: false
+#| include:false
+#| label: fig-type
+#| fig-cap: "Trend of crisis calls by type over time"
+#| fig-pos: H
+#| fig-width: 7
+#| fig-height: 3
+
+crisis_type_data <- read_csv(paste0(gsub("/paper", "", getwd()), "/data/crisis_type_data.csv"))
+crisis_type_graph <-
+ggplot(crisis_type_data, aes(x = Year, y = Number_of_crisis_call, color = Type)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
+  labs(x = "Year",
+       y = "Number of Crisis Calls",
+       color = "Crisis Type") +
+  theme_minimal() +
+  scale_colour_brewer(palette = "Paired")
+
+crisis_type_graph
+```
+
+### Time period
+
+
+```{r}
+#| echo: false
+#| eval: false
+#| warning: false
+#| message: false
+#| include:false
+#| label: fig-time
+#| fig-cap: "Distribution of crisis calls over the day by type"
+#| fig-pos: H
+#| fig-width: 7
+#| fig-height: 3
+
+time_data <- read_csv(paste0(gsub("/paper", "", getwd()), "/data/time_data.csv"))
+time_graph <-
+  ggplot(time_data,
+         mapping = aes(x = time_of_day, fill = Type))+
+  theme_minimal() +
+  geom_bar(position = "dodge2")+
+  labs(x = "Time of the day", y = "Number of Crisis Call", fill = "Type") +
+  scale_fill_brewer(palette = "Paired")
+
+time_graph
+```
+
+### Location
+
+
+```{r}
+#| echo: false
+#| eval: false
+#| warning: false
+#| message: false
+#| include: false
+#| label: fig-location
+#| fig-cap: "Number of crisis calls in different neighbourhoods classified by types"
+#| fig-width: 8
+#| fig-height: 9
+#| fig-pos: H
+
+neighbourhood_data <- read_csv(paste0(gsub("/paper", "", getwd()), "/data/neighbourhood_data.csv"))
+
+neighbourhood_figure <-
+  neighbourhood_data %>% 
+  ggplot(mapping = aes(x = Neighbourhood_name, y = Number)) +
+  geom_boxplot() +
+  scale_x_discrete(drop = TRUE) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
+  labs(x = "Neighbourhood Name", y = "Number of Crisis Calls") +
+  facet_grid(rows = vars(Type), cols = vars(Location), scales = "free")
+
+neighbourhood_figure
+
+```
+
+# Discussion
+
+\newpage
+
+# References
