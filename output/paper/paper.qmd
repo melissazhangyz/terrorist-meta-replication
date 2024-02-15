@@ -1,5 +1,5 @@
 ---
-title: "Replication"
+title: "Explosive information of terrorism is encouraging outgroup hostility"
 author: Yingzhi Zhang
 date: today
 date-format: long
@@ -10,6 +10,7 @@ header-includes:
 mainfont: Times New Roman
 sansfont: Times New Roman
 number-sections: true
+bibliography: reference.bib
 toc: true
 ---
 
@@ -20,22 +21,26 @@ toc: true
 
 library(tidyverse)
 library(janitor)
-library(lubridate)
-library(opendatatoronto)
+library(readxl)
 library(knitr)
 library(kableExtra)
 
 ```
 
 # Introduction
+Since the 9/11 event, terrorists attacks and terrorism have generated heated discussion by political scientists. While the definition of terrorism originated form the French Revolution as an extreme sub-product of nationalism, modern literature started to focus on its political and religious connection due to the modern type of terrorist movements.[@rapoport1983fear] To achieve their goals, which usually has a political source, terrorists conduct massive and severe violence indiscriminately, including suicide attack, bombing, airplaine hijacking and etc.[@chalk2012encyclopedia] 
+
+The ultimate goal of terrorist tactics is to attack public opinion and cognition. Under the surface of ciminal actions, terrorism aims at conveying political objectives. The physical harm of injuries and casualties of terrorist attacks is nothing but a method to frighten the generalized public in the whole society. Consequently, they are able to produce a vastly spreading emotion of fear and anxiety. The psychological harm and the damage to societal stability is the central goal of terrorism.[@wayne2019risk]
+
+Historical literature has mentioned the psychological and ideological effect of terrorism on the public. One general concern is whether the fear and worries among the society is shakenning the democracy, but many articles followed to rebut by concluding that such effect is limited in degree and duration.[@sniderman2019reactions] Recently, Amélie Godefroidt, the postdoctoral Researcher in Norwegian University of Science and Technology, conducted a research to explore a more general picture of how terrorism affects public opinion using meta-analytical tool. In specific, Godefroidt collected thousands of academic research regarding the issue of terrorism and public opinion. Generating the effect size and conducting a regression analysis, the author concludes that terrorism is associated with public ideology in outgroup hostility, political conservatism and rally-‘round-the- flag reactions to a small but significant degree.[@main]
+
+Based on Godefroidt's publication, I will study the different degrees of the effect on political attitude originated from terrorism in different countries and time in the history. In @sec-data, I will introduce the dataset used in this study. All of the data are obatined from the replication package provided by Godefroidt. After explaining in detail about the data collection procedure of the original paper regarding the meta-analysis, I will discuss the data procession methods in both the original paper and the following part of this study. Then, I will proceed to the result part in @sec-result. xxxxxxxxxxxxxxxxxx
+
+# Data {#sec-data}
+## Source and collection
 
 
-
-# Data 
-## Source and Data Collection
-
-
-## Data Processing
+## Data processing
 
 
 ```{r}
@@ -57,8 +62,8 @@ table_clean <-
 table_clean
 ```
 
-## Data Visualisation
-### Crisis type
+## Meta-analysis Data Visualization
+
 
 
 ```{r}
@@ -86,7 +91,7 @@ ggplot(crisis_type_data, aes(x = Year, y = Number_of_crisis_call, color = Type))
 crisis_type_graph
 ```
 
-### Time period
+
 
 
 ```{r}
@@ -112,7 +117,7 @@ time_graph <-
 time_graph
 ```
 
-### Location
+
 
 
 ```{r}
@@ -142,7 +147,15 @@ neighbourhood_figure
 
 ```
 
-# Discussion
+# Result {#sec-result}
+## Moderator analysis
+
+# Discussion {#sec-discussion}
+## discussion 1
+## discussion 2
+## discussion 3
+## limitation
+## future study
 
 \newpage
 
