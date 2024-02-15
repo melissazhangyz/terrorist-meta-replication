@@ -1,17 +1,20 @@
 ---
-title: "Explosive information of terrorism is encouraging outgroup hostility"
+title: "Explosive information of terrorism is altering public opinion"
+thanks: "Code and data are available at: https://github.com/melissazhangyz/terrorist-meta-replication. This is the link to Social Science Reproduction Platform:https://www.socialsciencereproduction.org/reproductions/cabbad32-dea9-438f-ada3-167ab8a8975e/index"
 author: Yingzhi Zhang
 date: today
 date-format: long
-abstract: "the abstract of the paper"
+abstract: "In the past few decades, terrorist tactics have caused massive injuries and casaulties to different countries around the world. Serving for the political goal of terrorists, the attack is utilized to produce fear and anxiety of the society so as to alter the public opinion. Through a meta-analysis of historical studies of terrorism and political attitudes, we can observe small but significant correlation. Moreover, the studies in this field varies in geography and is changing over the time."
 format: pdf
 header-includes: 
 - \usepackage{float}
+- \usepackage{amsmath}
 mainfont: Times New Roman
 sansfont: Times New Roman
 number-sections: true
 bibliography: reference.bib
 toc: true
+toc-depth: 3
 ---
 
 ```{r}
@@ -19,143 +22,254 @@ toc: true
 #| warning: false
 #| message: false
 
+# general set up
 library(tidyverse)
 library(janitor)
 library(readxl)
 library(knitr)
+library(forcats)
 library(kableExtra)
+library(broom)
+library(dotwhisker)
 
 ```
+\newpage
 
 # Introduction
-Since the 9/11 event, terrorists attacks and terrorism have generated heated discussion by political scientists. While the definition of terrorism originated form the French Revolution as an extreme sub-product of nationalism, modern literature started to focus on its political and religious connection due to the modern type of terrorist movements.[@rapoport1983fear] To achieve their goals, which usually has a political source, terrorists conduct massive and severe violence indiscriminately, including suicide attack, bombing, airplaine hijacking and etc.[@chalk2012encyclopedia] 
 
-The ultimate goal of terrorist tactics is to attack public opinion and cognition. Under the surface of ciminal actions, terrorism aims at conveying political objectives. The physical harm of injuries and casualties of terrorist attacks is nothing but a method to frighten the generalized public in the whole society. Consequently, they are able to produce a vastly spreading emotion of fear and anxiety. The psychological harm and the damage to societal stability is the central goal of terrorism.[@wayne2019risk]
+Since the 9/11 event, terrorists attacks and terrorism have generated heated discussion by political scientists. While the definition of terrorism originated form the French Revolution as an extreme sub-product of nationalism, modern literature started to focus on its political and religious connection due to the modern type of terrorist movements.[@rapoport1983fear] To achieve their goals, which usually has a political source, terrorists conduct massive and severe violence indiscriminately, including suicide attack, bombing, airplane hijacking and etc.[@chalk2012encyclopedia]
 
-Historical literature has mentioned the psychological and ideological effect of terrorism on the public. One general concern is whether the fear and worries among the society is shakenning the democracy, but many articles followed to rebut by concluding that such effect is limited in degree and duration.[@sniderman2019reactions] Recently, Amélie Godefroidt, the postdoctoral Researcher in Norwegian University of Science and Technology, conducted a research to explore a more general picture of how terrorism affects public opinion using meta-analytical tool. In specific, Godefroidt collected thousands of academic research regarding the issue of terrorism and public opinion. Generating the effect size and conducting a regression analysis, the author concludes that terrorism is associated with public ideology in outgroup hostility, political conservatism and rally-‘round-the- flag reactions to a small but significant degree.[@main]
+The ultimate goal of terrorist tactics is to attack public opinion and cognition. Under the surface of criminal actions, terrorism aims at conveying political objectives. The physical harm of injuries and casualties of terrorist attacks is nothing but a method to frighten the generalized public in the whole society. Consequently, they are able to produce a vastly spreading emotion of fear and anxiety. The psychological harm and the damage to societal stability is the central goal of terrorism.[@wayne2019risk]
 
-Based on Godefroidt's publication, I will study the different degrees of the effect on political attitude originated from terrorism in different countries and time in the history. In @sec-data, I will introduce the dataset used in this study. All of the data are obatined from the replication package provided by Godefroidt. After explaining in detail about the data collection procedure of the original paper regarding the meta-analysis, I will discuss the data procession methods in both the original paper and the following part of this study. Then, I will proceed to the result part in @sec-result. xxxxxxxxxxxxxxxxxx
+Historical literature has mentioned the psychological and ideological effect of terrorism on the public. One general concern is whether the fear and worries among the society is shaking the democracy, but many articles followed to rebut by concluding that such effect is limited in degree and duration.[@sniderman2019reactions] Recently, Amélie Godefroidt, the postdoctoral Researcher in Norwegian University of Science and Technology, conducted a research to explore a more general picture of how terrorism affects public opinion using meta-analytic tool. In specific, Godefroidt collected thousands of academic research regarding the issue of terrorism and public opinion. Generating the effect size and conducting a regression analysis, the author concludes that terrorism is associated with public ideology in out-group hostility, political conservatism and rally-‘round-the- flag reactions to a small but significant degree.[@main]
+
+In this study, I will replicate the study and figures of @main. Based on Godefroidt's publication, I will explore the different degrees of the effect on political attitude originated from terrorism in different countries and time in the history. In @sec-data, I will introduce the dataset used in this study. All of the data are obtained from the replication package provided by Godefroidt. After explaining in detail about the data collection procedure of the original paper regarding the meta-analysis, I will discuss the data procession methods in both the original paper and the following part of this study. Then, I will proceed to the result part in @sec-result. I will introduce the major and key result of the orginial paper found by @main. Then, I will dive deeper in explaning the differences of such effect by countries and its changing trend over time. Finally, in @sec-discussion, I impose three major questions after the replication of the article. I also include a discussion of limitation of this study, along with the expectation of future study.
 
 # Data {#sec-data}
+
 ## Source and collection
 
+This study is based on the replication of the article "How Terrorism Does (and Does Not) Affect Citizens’ Political Attitudes: A Meta-Analysis" written by Amélie Godefroidt. All of the data used for analysis is obtained from the replication package provided by Godefroidt at Wiley Online Library.[^1] The initial package includes the necessary codes and data for replication. There are four documents in the data folder: effect size data, sampling information, meta analysis data, and time series data. The replication in this study use meta analysis data in majority. The data cleaning procedure uses R[@citeR] and R packages "tidyverse"[@tidyverse], "janitor"[@janitor], "readxl" [@readxl], "knitr"[@knitr], "kableExtra"[@kableextra], "forcats"[@forcats], "broom"[@broom] and "dotwhisker"[@dotwhisker].
 
-## Data processing
+[^1]: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/K4L5YI
 
-
+The fundamental analytic method of the original paper is meta-analysis. Using this method, the author is able to generate a comprehensive quantitative analysis to investigate the generalized situation systematically.The first step of meta analysis is to collect as many source papers as possible, including the published and unpublished works. The author adopted a four-step strategy to collect the initial pool of papers, including an electronic search, a public call for additional studies, a screening of related review articles, and a forward and backward search.[@main] A total of 326 studies are coded and described under 241 manuscripts, revealing 1,733 unique estimates. Then, the second step is to distinguish the effect size of individual papers. Since the association in different papers are unique and different from one and another, Godegroidt converted them into a Pearson’s correlation coefficient, calculated sampling variance, and adjusted the sign of coefficients so that they all represent in the same direction in the new model.[@main] Ultimately, the author obtained a data set of effect size of all papers chosen and a meta-analysis dataset. 
 ```{r}
 #| echo: false
-#| eval: false
+#| eval: true
 #| warning: false
 #| message: false
 #| label: tbl-01
-#| tbl-cap: "First ten rows of the cleaned crisis call data"
+#| tbl-cap: "First ten columns and rows of the meta analysis data"
 #| tbl-cap-location: bottom
 #| tbl-pos: H
 
-cleaned_data <- read_csv(paste0(gsub("/paper", "", getwd()), "/data/cleaned_data.csv"))
-table01_data <- head(cleaned_data, 10)
+raw_meta_data <- read_xlsx(paste0(gsub("/paper", "", getwd()), "/data/raw_meta_data.xlsx"))
+table01_data <- 
+  raw_meta_data %>% 
+  relocate(Country, .after = 2) %>% 
+  select(1:10) %>% 
+  head(10)
+  
 table_clean <-
   kable(table01_data, format = "latex", booktabs = TRUE) %>%
   kable_styling(latex_options = c("striped", "scale_down"))
 
 table_clean
 ```
+The following discussion in this paper is based on the meta-analysis data in majority. This is a comprehensive dataset that contains 1,733 entries. As shown in @tbl-01, the meta-analysis dataset includes the specific information of all the associations, such as years, countries, type of terrorism studies, and etc. The table only shows the first 10 columns of the total 87 of which introduces 8 distinctive aspects: general information, study and sample, independent variable, dependent variable, inter-group attitudes, political attitudes, statistical information, and the final standardized effect size and precision. With the meta-analysis dataset, we can discover the publication year and area of the studies as presented in @fig-country and type of terrorism studies in @fig-type.
 
-## Meta-analysis Data Visualization
-
-
+## Meta analysis data visualization
+### Year to study categorized by country
+In the original paper, @main shows that the start year of research in terrorism and public opinion has a general increase trend after it bursted out after the 9/11 event in 2001. The author also shows how this number peaks at specific terrorist attack event, such as train bombing in Madrid in 2004 and the massive terror attack in Paris in 2015. However, @fig-country explains the story in a more specific and detailed way. Regarding the number, the US conducted the most research for papers and reports in studying terrorism and public opinion. Among the total 541 research done in the US, a total of 94 researches started data collection procedure in 2001 after the 9/11 event alone. The second most country is Israel with a total of 415 research conducted. Unlike US, many of the research conducted by Israel scientists use data before major events. Additionally, there is no substantial peak. The busrt of studies in Israel are correlated with all major events of terrorist attack. The situation in Spain and France are simiar. They all have a obvious peak when a severe terrorist event happened in the border. 37 out of the total 60 studies started in 2004 after the Madrid Bombing attack in Spain, and 58 out of the total 68 studies started in 2015 after the IS attack in France. UK has conducted a total of 77 studies in this field since 2002. Comparatively, Canada is involved in this topic the least among the six countries, which only has 16 studies.
 
 ```{r}
 #| echo: false
-#| eval: false
+#| eval: true
+#| warning: false
+#| message: false
+#| label: fig-country
+#| fig-cap: "Data collection year by country"
+#| fig-subcap: "The data collection year of each study conducted by different countries independently included in the meta analysis dataset with descriptive labels of major events."
+#| fig-pos: H
+#| fig-width: 7
+#| fig-height: 7
+
+# Filter data for each of the four countries
+dat_US <- 
+  raw_meta_data %>% 
+  filter(Country == "US")
+dat_Israel <- 
+  raw_meta_data %>% 
+  filter(Country == "Israel")
+dat_UK <- 
+  raw_meta_data %>% 
+  filter(Country == "UK")
+dat_France <-
+  raw_meta_data %>% 
+  filter(Country == "France")
+dat_Spain <-
+  raw_meta_data %>% 
+  filter(Country == "Spain")
+dat_Canada <- 
+  raw_meta_data %>% 
+  filter(Country == "Canada")
+
+# Combine the datasets into a single dataframe, adding a 'Country' column
+dat_combined <- bind_rows(
+  mutate(dat_US, Country = "US"),
+  mutate(dat_Israel, Country = "Israel"),
+  mutate(dat_UK, Country = "UK"),
+  mutate(dat_France, Country = "France"),
+  mutate(dat_Spain, Country = "Spain"),
+  mutate(dat_Canada, Country = "Canada")
+)
+
+#Set order
+dat_combined$Country <- fct_relevel(dat_combined$Country, 
+                                    "US", "Israel", "Spain", "France", "UK", "Canada")
+
+# Create the base plot
+base_plot <- ggplot(dat_combined, aes(x = StudyYear)) +
+  geom_histogram(binwidth = 1, color = "#000000", fill = "lightblue3") +
+  labs(y = "Number of Studies", x = "Year") +
+  scale_x_continuous(breaks = c(1985, 1990, 1995, 2000, 2005, 2010, 2015, 2020)) +
+  theme_classic() +
+  geom_vline(xintercept = 2001, linetype = "dashed", size = 1) +
+  geom_vline(xintercept = 2004, linetype = "dashed", size = 1) +
+  geom_vline(xintercept = 2015, linetype = "dashed", size = 1) +
+  geom_label(aes(x = 2001, y = 27, label = "9/11"), size = 3) +
+  geom_label(aes(x = 2007, y = 35, label = "Madrid & \n Israel-Palestine"), size = 2) +
+  geom_label(aes(x = 2014, y = 44, label = "IS Attacks"), size = 3) +
+  facet_wrap(~ Country, ncol = 2)
+
+# Create the panel of four figures
+panel_plot <- base_plot + 
+  facet_wrap(~ Country, scales = "free_y", ncol = 2)
+
+# Display the plot
+panel_plot
+```
+
+### Type of terrorism over years
+@main calculates and presents the probability of different types of terrorism in the meta-analysis data. In the data visualization part, the author shows that over 60% of terrorism studied is Islamic terrorism, much more than all other types. The second largest group, no ideology studies, only consist about 20% of total research. However, the author only examines the probability of the total number in different types without a detailed examination of change regarding time. Much information is still hidden under the original bar chart. @fig-type, on the other hand, is more comprehensive and uncovers the changing interest of political scientists in specific topics. Echoing with @main, studies regarding Islamic type of terrorism is always the most except for 2005. Though the no ideology type of studies is almost as many as Islamic type, the porportion of Islamist surged after 2015. In addition to traditional topics, the extreme right type is so young that it has not appeared until 2016. This type of study is rapidly growing, from only 1 in 2016 to 6 in 2019. 
+
+```{r}
+#| echo: false
+#| eval: true
 #| warning: false
 #| message: false
 #| label: fig-type
-#| fig-cap: "Trend of crisis calls by type over time"
+#| fig-cap: "Trend of terrorism type involved in studies after 2000"
+#| fig-cap-location: bottom
 #| fig-pos: H
 #| fig-width: 7
-#| fig-height: 3
+#| fig-height: 4
 
-crisis_type_data <- read_csv(paste0(gsub("/paper", "", getwd()), "/data/crisis_type_data.csv"))
-crisis_type_graph <-
-ggplot(crisis_type_data, aes(x = Year, y = Number_of_crisis_call, color = Type)) +
-  geom_line(size = 1) +
-  geom_point(size = 2) +
-  labs(x = "Year",
-       y = "Number of Crisis Calls",
-       color = "Crisis Type") +
-  theme_minimal() +
-  scale_colour_brewer(palette = "Paired")
+#wrangling
+raw_meta_data$TerrorType[raw_meta_data$Type==0] <- "No ideology"
+raw_meta_data$TerrorType[raw_meta_data$Type==1] <- "Islamist"
+raw_meta_data$TerrorType[raw_meta_data$Type==2] <- "Extreme right"
+raw_meta_data$TerrorType[raw_meta_data$Type==3] <- "Other"
+raw_meta_data$TerrorType[raw_meta_data$Type==4] <- "Other"
+raw_meta_data$TerrorType[raw_meta_data$Type==5] <- "State terror"
+raw_meta_data$TerrorType[raw_meta_data$Type==6] <- "Other"
+raw_meta_data$TerrorType <- as.factor(raw_meta_data$TerrorType)
+raw_meta_data$Year <- as.integer(raw_meta_data$Year)
 
-crisis_type_graph
+# Create a complete set of year and TerrorType combinations
+complete_years <- expand.grid(Year = min(raw_meta_data$Year):max(raw_meta_data$Year), 
+                              TerrorType = levels(raw_meta_data$TerrorType))
+
+# Count the number of research papers per year for each type of terrorism
+yearly_counts <- 
+  raw_meta_data %>%
+  group_by(Year, TerrorType) %>%
+  summarise(Number = n(), .groups = 'drop') %>% 
+  right_join(complete_years, by = c("Year", "TerrorType")) %>%
+  replace_na(list(Count = 0)) %>% 
+  filter(Year > 2000)
+
+# Draw the graph
+type_of_terrorism <-
+  ggplot(yearly_counts, aes(x = Year, y = Number, color = TerrorType, group = TerrorType)) +
+  geom_line() +  
+  geom_point() +  
+  scale_y_continuous(name = "Number of Research Papers") +
+  scale_x_continuous(name = "Year") +
+  scale_color_brewer(palette = "Set1") + 
+  theme_classic() +
+  theme(legend.position = "bottom")  
+
+type_of_terrorism
 ```
 
+## Data processing
 
+In the original study, @main adoped a three-level approach to study the effect size of three specific categories: outgroup Hostility, conservative shift, and rally effect. Initially, the meta analysis will only provide the effect size of manuscripts with three error terms: a deviation of the mean population effect size in specific manuscript from overall population effect size; a deviation population effect size regard another manuscript from the mean effect in its own, and a error term due to sampling fluctuation. @main then extends to build an extensive model where dependent variables could be a specific charateristic $(X_j)$ that we would like to study and effect size within manuscripts $(X_{ij})$. The model can be written as:
+\begin{equation*}
+Y_{ij} = \beta_0 + u_{(2)ij} + u_{(3)j} + e_{ij},
+\end{equation*}
 
-
-```{r}
-#| echo: false
-#| eval: false
-#| warning: false
-#| message: false
-#| label: fig-time
-#| fig-cap: "Distribution of crisis calls over the day by type"
-#| fig-pos: H
-#| fig-width: 7
-#| fig-height: 3
-
-time_data <- read_csv(paste0(gsub("/paper", "", getwd()), "/data/time_data.csv"))
-time_graph <-
-  ggplot(time_data,
-         mapping = aes(x = time_of_day, fill = Type))+
-  theme_minimal() +
-  geom_bar(position = "dodge2")+
-  labs(x = "Time of the day", y = "Number of Crisis Call", fill = "Type") +
-  scale_fill_brewer(palette = "Paired")
-
-time_graph
-```
-
-
-
-
-```{r}
-#| echo: false
-#| eval: false
-#| warning: false
-#| message: false
-#| label: fig-location
-#| fig-cap: "Number of crisis calls in different neighbourhoods classified by types"
-#| fig-width: 8
-#| fig-height: 9
-#| fig-pos: H
-
-neighbourhood_data <- read_csv(paste0(gsub("/paper", "", getwd()), "/data/neighbourhood_data.csv"))
-
-neighbourhood_figure <-
-  neighbourhood_data %>% 
-  ggplot(mapping = aes(x = Neighbourhood_name, y = Number)) +
-  geom_boxplot() +
-  scale_x_discrete(drop = TRUE) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))+
-  labs(x = "Neighbourhood Name", y = "Number of Crisis Calls") +
-  facet_grid(rows = vars(Type), cols = vars(Location), scales = "free")
-
-neighbourhood_figure
-
-```
+I adopt the same model for the following discussion in this study. To be more specific, I will also examine the regressional relationship on the observed effective size of manuscriipt by making a characteristic of the manuscript from the columns of meta-analysis data as a dummy variable. However, I wil emphasize the effect of terrorism in differen geographic area. Thus, the "Country" information in the data is the major variable studied.
 
 # Result {#sec-result}
+
+In the original paper, @main reached the conclusion that there is association between terrorism and overall political attitude. The estimated overall correlations transformed using Fisher’s Z test $Z_r$ show significance in all three categories. Political conservatism has the largest $Z_r = 0.132$, together with outgroup hostility of which $Z_r = 0.126$. Rally effect has a smaller but still significant where $Z_r = 0.090$. This result suggest that receiving more news, noise and information regarding terrorist attacks and terrorism, people are more hostile on outgroup, more conservative in political ideas, and more willing to attend political rallies. In general, political attitudes were indeed altered under the fear of terrorists attack.
+
+The article then explores moderators of the relationship between terrorism and political attitudes, revealing substantial heterogeneity in effect sizes. By assigning interested columns into dummy varaibles, @main finds out that many methodological factors, including study design and timing of measurements, also affect observed effect sizes. Among all of the factors, a notable finding is that studies on non-Islamist terrorism yield weaker or nonsignificant correlations, which implies the biased social psychology regarding the Islamic group. 
+
 ## Moderator analysis
 
+```{r}
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+#| label: fig-result
+#| fig-cap: "Relationship between Terrorism and Political Attitudes in different countries"
+#| fig-cap-location: bottom
+#| fig-pos: H
+#| fig-width: 7
+#| fig-height: 4
+
+og_location_df <- read_csv(paste0(gsub("/paper", "", getwd()), "/data/og_location_df.csv"))
+og_location_plot <- dwplot(og_location_df, #plot
+                           dot_args = list(size = 2),
+                           whisker_args = list(size = 0.5),
+                           vline = geom_vline(xintercept = 0, colour = "grey60", linetype = 2, size = 0.7)) +
+  theme(plot.margin=grid::unit(c(0,0,0,0), "mm")) +
+  scale_color_grey() +
+  xlim(-0.1, .25) 
+
+og_location_plot
+```
+Emphasizing on the geographical differences, we can add more dummy variables to study the different regressors. Along with result found by @main, stronger correlation appear in United States and Israel as shown in @fig-result. The dataset in France and Canada is not large enough to show a comprehensive situation. The limited data suggests that slight to no effect was caused by terrorism. Association in the United Kingdom and Spain is not large comparative to the US and Israel, which means public opinion is rather stable and unchanged.
+
 # Discussion {#sec-discussion}
-## discussion 1
-## discussion 2
-## discussion 3
-## limitation
-## future study
+
+## Is the world standing together to defend terrorism?
+
+Terrorism has risen to be a global concern for a long time. New York, Madrid, Paris and many world first class metropolitan cities have witnessed the attack of terrorists. Hundreds and thousands of injuries and casualties are directly of indirectly caused by terrorism.The growing power of the terrorist groups require a global act to defend together.[@lafree2014putting] However, the findings of literature shows an extremely narrow perspective where citizens highlight national securities after explosive to massive information of terrorism.[@lafree2014putting] More importantly, historical literatures are biased in geography themselves. 
+
+The findings presented in the meta-analysis data and its analysis of @fig-country suggest a nationalistic approach towards the study of terrorism, where the focus predominantly lies within the borders of the researchers' own countries. The surge in research post major terrorist events, such as the 9/11 attacks in the United States or the Madrid bombings, indicates a reactionary stance in academia, which largely aligns with immediate national concerns rather than a unified global effort against terrorism. The U.S. and Israel lead in the volume of research conducted, reflecting their direct engagement with significant terrorist activities. Spain and France, on the other hand, only conduct large amount of research when severe attack occured in their home country. Many other countries that are lucky enough that they have not experience direct attack from terrorists are not even included in the meta analysis. This national-centric view may hinder the development of comprehensive strategies that address the root causes of terrorism and foster international collaboration. 
+
+## Does terrorism lead to bias to Islamic group?
+
+Religious topics and studies are more and more common in modern discussion of terrorism. While scientists are appealing to an unbiased and justified treatment to the Islamic group in their papers, the tight connections of Islam world with terrorist activities have already resulted in harm and danger to the Islamic group out of the border. One example is the dishumanlization behavior discovered to the Islamic immigrant group in the US.[@panagopoulos2006polls] Indeed, the literature itself is generating a voice by concentrating too much on the topic of Islamic related terrorism.
+
+Shown in @fig-type, the topics on Islamic terrorism is far more than any other types of terrorism. This disproportionate emphasis not only highlights the prevalent interest within the academic community but also raises concerns about the potential for these studies to influence public opinion towards bias against Islamic groups. The findings suggest that while other forms of terrorism, such as extreme right-wing acts, have begun to receive attention, they are still significantly underrepresented in research.
+
+## Whether terrorist attacks "succeed" or not?
+
+While political scientists have not yet made an agreement on the definition of "terrorism", they all believe that terrorism is political, violent and psychology-aiming activity.[@chalk2012encyclopedia] The significant correlationship between terrorism and public political attitudes suggest that terrorism is altering people's minds.[@main] The findings highlight a nuanced picture of terrorism's effects, suggesting that while terrorism may succeed in altering public attitudes and potentially achieving some of its psychological objectives, the reactions are diverse and mediated by a variety of factors. As presented in @fig-result, however, such effect differs in many aspects including regions. In the center of the conflict, Israel and the United States suffer most from terrorism, comparing to France, Spain, UK and Canada. The variability in effect sizes based on different moderators suggests that the impact of terrorism is not uniform and can probably be influenced by how societies and individuals process and respond to these events.
+
+## Limitation
+
+The limitation of this study is generated from the meta-analysis procedure and the consequent dataset. Firstly, the collection of dataset is done by the author Amélie Godefroidt, which may induce personal bias due to assymetric information. Though the author adopts certain procedures and methods to prevent such bias, it is nevitable to have bias of omitting studies that is not accessible for the author. One possible reason is that the paper was written in other languages than English. Secondly, the effect size calculation is based on mannual adjustment of associations in distinctive papers by Godefroidt. Personal understanding of the paper may also generate biad to the intepretation of the models in meta-analysis dataset. Thirdly, the result part emphasizes on only 6 countries that I picked, partly due to personal interest. This may not reveal a comprehensive illustration of the effect of terrorism all over the world.
+
+## Future study
+Based on the questions I proposed in the discussion part, future study of terrorism and the effect on general political attitude alternations should adopt a globalized horizon. Comparing the magnitute of mind changing between citizens who live in the country which is directly attacked by terrorist groups and those who do not may be a method to explore the effect of terrorism in social psychology.
 
 \newpage
 

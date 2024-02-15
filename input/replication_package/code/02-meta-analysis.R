@@ -161,7 +161,7 @@ TerrorMeasures <- TerrorMeasures + mytheme
 
 
 # type of terrorism
-summary(as.factor(dat$Type))
+summary(as.factor(raw_meta_data$Type))
 
 #wrangling
 dat$TerrorType[dat$Type==0] <- "No ideology"
